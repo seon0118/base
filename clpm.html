@@ -1,313 +1,377 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>跨時關係探索王國：給國中生的CLPM入門</title>
-    <style>
-        body {
-            font-family: 'Microsoft JhengHei', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        
-        header {
-            background-color: #4b6cb7;
-            color: white;
-            padding: 30px;
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            margin: 0;
-            font-size: 2.2em;
-        }
-        
-        h2 {
-            color: #4b6cb7;
-            border-bottom: 2px solid #4b6cb7;
-            padding-bottom: 5px;
-            margin-top: 40px;
-        }
-        
-        h3 {
-            color: #6a8fd8;
-        }
-        
-        .section {
-            background-color: white;
-            padding: 25px;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .example {
-            background-color: #e9f0ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        
-        .note {
-            background-color: #fff3cd;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        
-        .illustration {
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px auto;
-            text-align: center;
-            max-width: 80%;
-        }
-        
-        .button {
-            display: inline-block;
-            background-color: #4b6cb7;
-            color: white;
-            padding: 12px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        
-        .button:hover {
-            background-color: #3a5491;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            color: #666;
-            border-top: 1px solid #ddd;
-        }
-        
-        .chart {
-            width: 100%;
-            height: 300px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            margin: 20px 0;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-        
-        th {
-            background-color: #f2f2f2;
-        }
-        
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>時間中的關聯：CLPM統計方法探索</title>
+  <style>
+    body {
+      font-family: 'Microsoft JhengHei', Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fb;
+      color: #333;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      background-color: #4a86e8;
+      color: white;
+      text-align: center;
+      padding: 40px 0;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    .tagline {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #4a86e8;
+      border-bottom: 2px solid #4a86e8;
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    .diagram {
+      text-align: center;
+      margin: 20px 0;
+      background-color: #f0f4fe;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .diagram img {
+      max-width: 100%;
+      height: auto;
+    }
+    .comparison {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .comparison-column {
+      flex: 1;
+      min-width: 250px;
+      background-color: #f0f4fe;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .example {
+      background-color: #e8f0fe;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    .metric {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .metric-icon {
+      font-size: 24px;
+      margin-right: 15px;
+      color: #4a86e8;
+      width: 30px;
+      text-align: center;
+    }
+    .highlight {
+      background-color: #fffde7;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9em;
+    }
+    .timeline {
+      position: relative;
+      margin: 30px 0;
+      padding: 20px 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background-color: #4a86e8;
+      transform: translateX(-50%);
+    }
+    .timeline-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .timeline-content {
+      width: 45%;
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .timeline-content::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 20px;
+      height: 20px;
+      background-color: #4a86e8;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+    .left {
+      margin-right: auto;
+    }
+    .left::after {
+      right: -30px;
+    }
+    .right {
+      margin-left: auto;
+    }
+    .right::after {
+      left: -30px;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
     <header>
-        <h1>跨時關係探索王國</h1>
-        <p>一起認識 CLPM (交叉滯後模型) — 探索變項之間隨時間變化的關係</p>
+      <h1>時間中的關聯：CLPM統計方法</h1>
+      <p class="tagline">用簡單的方式了解複雜的統計概念</p>
     </header>
-    
-    <div class="section">
-        <h2>什麼是 CLPM？</h2>
-        <p>CLPM 是「Cross-Lagged Panel Model」（交叉滯後模型）的縮寫。這聽起來很複雜，對吧？讓我們把它想成是一種特殊的「時光偵探」工具！</p>
-        
-        <div class="example">
-            <h3>生活中的例子</h3>
-            <p>想像你有兩件事：「每天讀書的時間」和「考試成績」。你可能好奇：</p>
-            <ul>
-                <li>是讀書時間增加導致考試成績提高？</li>
-                <li>還是考試成績好了，讓你更喜歡讀書，所以讀書時間才增加？</li>
-                <li>或者這兩者之間互相影響？</li>
-            </ul>
-            <p>CLPM 就像一個偵探，幫助我們釐清這些時間上的因果關係！</p>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>CLPM 的基本概念</h2>
-        <p>CLPM 研究「交叉影響」，也就是一個變項在某個時間點對另一個變項在未來時間點的影響。</p>
-        
-        <div class="illustration">
-            <p><strong>CLPM 基本模型示意圖</strong></p>
-            <div style="display: flex; justify-content: space-between; margin: 30px 0;">
-                <div style="text-align: center;">
-                    <div style="padding: 15px; border: 2px solid #4b6cb7; border-radius: 50%;">變項A<br>時間1</div>
-                </div>
-                <div style="text-align: center; align-self: flex-start;">
-                    <div style="padding: 15px; border: 2px solid #4b6cb7; border-radius: 50%;">變項B<br>時間1</div>
-                </div>
-            </div>
-            <div style="display: flex; justify-content: center; margin-top: -50px;">
-                <div style="transform: rotate(30deg); width: 100px; border-top: 2px dashed #FF5733;">&rarr;</div>
-                <div style="transform: rotate(-30deg); width: 100px; border-top: 2px dashed #33A1FF; margin-left: -100px;">&rarr;</div>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin: 30px 0;">
-                <div style="text-align: center;">
-                    <div style="padding: 15px; border: 2px solid #4b6cb7; border-radius: 50%;">變項A<br>時間2</div>
-                </div>
-                <div style="text-align: center; align-self: flex-start;">
-                    <div style="padding: 15px; border: 2px solid #4b6cb7; border-radius: 50%;">變項B<br>時間2</div>
-                </div>
-            </div>
-            <p>橘色箭頭：變項A在時間1對變項B在時間2的影響<br>藍色箭頭：變項B在時間1對變項A在時間2的影響</p>
-        </div>
-        
-        <p>這個模型讓我們可以同時探索：</p>
+
+    <div class="card">
+      <h2>什麼是CLPM？</h2>
+      <p><strong>CLPM</strong>（Cross-Lagged Panel Model，交叉延遲面板模型）是一種統計方法，用來分析<span class="highlight">變數之間隨著時間變化的關係</span>。</p>
+
+      <div class="example">
+        <h3>日常生活的例子</h3>
+        <p>想像你想了解「閱讀時間」和「語文成績」之間的關係：</p>
         <ul>
-            <li><strong>穩定性路徑</strong>：同一變項在不同時間點的關係（例如：時間1的讀書時間和時間2的讀書時間）</li>
-            <li><strong>交叉路徑</strong>：不同變項在不同時間點的交叉影響（例如：時間1的讀書時間和時間2的考試成績）</li>
+          <li>閱讀時間會影響之後的語文成績嗎？</li>
+          <li>語文成績好的人會更願意花時間閱讀嗎？</li>
+          <li>這種關係會隨著時間改變嗎？</li>
         </ul>
+        <p>CLPM就是用來回答這類問題的統計工具！</p>
+      </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- 時間1變數 -->
+          <circle cx="100" cy="100" r="40" fill="#4a86e8" />
+          <text x="100" y="100" text-anchor="middle" fill="white" font-size="14">閱讀時間 T1</text>
+          
+          <circle cx="100" cy="200" r="40" fill="#ea4335" />
+          <text x="100" y="200" text-anchor="middle" fill="white" font-size="14">語文成績 T1</text>
+          
+          <!-- 時間2變數 -->
+          <circle cx="300" cy="100" r="40" fill="#4a86e8" />
+          <text x="300" y="100" text-anchor="middle" fill="white" font-size="14">閱讀時間 T2</text>
+          
+          <circle cx="300" cy="200" r="40" fill="#ea4335" />
+          <text x="300" y="200" text-anchor="middle" fill="white" font-size="14">語文成績 T2</text>
+          
+          <!-- 時間3變數 -->
+          <circle cx="500" cy="100" r="40" fill="#4a86e8" />
+          <text x="500" y="100" text-anchor="middle" fill="white" font-size="14">閱讀時間 T3</text>
+          
+          <circle cx="500" cy="200" r="40" fill="#ea4335" />
+          <text x="500" y="200" text-anchor="middle" fill="white" font-size="14">語文成績 T3</text>
+          
+          <!-- 自我路徑 -->
+          <line x1="140" y1="100" x2="260" y2="100" stroke="#4a86e8" stroke-width="3" />
+          <line x1="340" y1="100" x2="460" y2="100" stroke="#4a86e8" stroke-width="3" />
+          
+          <line x1="140" y1="200" x2="260" y2="200" stroke="#ea4335" stroke-width="3" />
+          <line x1="340" y1="200" x2="460" y2="200" stroke="#ea4335" stroke-width="3" />
+          
+          <!-- 交叉路徑 -->
+          <line x1="140" y1="100" x2="260" y2="200" stroke="#34a853" stroke-width="3" stroke-dasharray="5,5" />
+          <line x1="140" y1="200" x2="260" y2="100" stroke="#fbbc05" stroke-width="3" stroke-dasharray="5,5" />
+          
+          <line x1="340" y1="100" x2="460" y2="200" stroke="#34a853" stroke-width="3" stroke-dasharray="5,5" />
+          <line x1="340" y1="200" x2="460" y2="100" stroke="#fbbc05" stroke-width="3" stroke-dasharray="5,5" />
+          
+          <!-- 同時相關 -->
+          <path d="M 100 140 Q 100 170 100 160" stroke="#666" stroke-width="2" fill="none" />
+          <path d="M 300 140 Q 300 170 300 160" stroke="#666" stroke-width="2" fill="none" />
+          <path d="M 500 140 Q 500 170 500 160" stroke="#666" stroke-width="2" fill="none" />
+          
+          <!-- 時間標籤 -->
+          <text x="100" y="270" text-anchor="middle" fill="#333" font-size="16">時間點1</text>
+          <text x="300" y="270" text-anchor="middle" fill="#333" font-size="16">時間點2</text>
+          <text x="500" y="270" text-anchor="middle" fill="#333" font-size="16">時間點3</text>
+          
+          <!-- 圖例 -->
+          <rect x="10" y="10" width="15" height="3" fill="#4a86e8" />
+          <text x="30" y="13" fill="#333" font-size="12">自我路徑</text>
+          
+          <rect x="10" y="30" width="15" height="3" fill="#34a853" stroke-dasharray="5,5" />
+          <text x="30" y="33" fill="#333" font-size="12">交叉路徑</text>
+          
+          <rect x="10" y="50" width="15" height="3" fill="#666" />
+          <text x="30" y="53" fill="#333" font-size="12">同時相關</text>
+        </svg>
+        <p>CLPM模型的基本概念：測量同樣的變數在不同時間點，並分析它們之間的關係</p>
+      </div>
     </div>
-    
-    <div class="section">
-        <h2>為什麼研究者要用 CLPM？</h2>
-        <p>研究者使用 CLPM 的主要原因是：</p>
-        <ol>
-            <li><strong>探索時間上的關係</strong>：了解變項之間隨時間變化的關係</li>
-            <li><strong>找出可能的因果關係</strong>：雖然不能完全證明因果關係，但可以提供重要線索</li>
-            <li><strong>比較不同群體</strong>：例如比較男生和女生的差異模式</li>
-        </ol>
-        
-        <div class="note">
-            <h3>小提示</h3>
-            <p>在我們的原文中提到「multi-group CLPM」（多群組交叉滯後模型），這是用來比較不同群體（例如男生和女生）之間的差異。研究者想知道：讀書動機和閱讀表現的關係在男生和女生之間是否有不同？</p>
+
+    <div class="card">
+      <h2>為什麼要使用CLPM？</h2>
+      <p>CLPM能幫助我們回答很多有趣的問題：</p>
+      <ul>
+        <li>變數A是否會<span class="highlight">影響</span>之後的變數B？</li>
+        <li>變數B是否會<span class="highlight">影響</span>之後的變數A？</li>
+        <li>這些影響有多<span class="highlight">強</span>？</li>
+        <li>影響會隨著<span class="highlight">時間</span>變化嗎？</li>
+        <li>男生和女生的影響<span class="highlight">模式</span>有差異嗎？</li>
+      </ul>
+      
+      <div class="example">
+        <h3>研究例子</h3>
+        <p>研究者想了解「閱讀動機」和「閱讀表現」之間的關係是否有性別差異：</p>
+        <div class="comparison">
+          <div class="comparison-column">
+            <h4>男生</h4>
+            <p>閱讀動機對之後的閱讀表現影響較小</p>
+            <p>閱讀表現對之後的閱讀動機影響較大</p>
+          </div>
+          <div class="comparison-column">
+            <h4>女生</h4>
+            <p>閱讀動機對之後的閱讀表現影響較大</p>
+            <p>閱讀表現對之後的閱讀動機影響較小</p>
+          </div>
         </div>
+      </div>
     </div>
-    
-    <div class="section">
-        <h2>如何判斷模型是否可靠？</h2>
-        <p>研究者使用一些指標來判斷他們的模型是否可靠：</p>
-        
-        <table>
-            <tr>
-                <th>指標名稱</th>
-                <th>好的標準</th>
-                <th>可接受的標準</th>
-                <th>簡單解釋</th>
-            </tr>
-            <tr>
-                <td>CFI</td>
-                <td>> 0.95</td>
-                <td>> 0.90</td>
-                <td>模型與數據吻合的程度</td>
-            </tr>
-            <tr>
-                <td>RMSEA</td>
-                <td>< 0.05</td>
-                <td>< 0.08</td>
-                <td>模型誤差的程度</td>
-            </tr>
-            <tr>
-                <td>SRMR</td>
-                <td>< 0.05</td>
-                <td>< 0.08</td>
-                <td>觀察值與預測值之間的差距</td>
-            </tr>
-        </table>
-        
-        <p>想像這些指標就像學校的考試分數，數值要達到某個標準才代表模型是有效的！</p>
-    </div>
-    
-    <div class="section">
-        <h2>一個閱讀動機的研究例子</h2>
-        <p>讓我們用一個例子來說明 CLPM 是如何應用的：</p>
-        
-        <div class="example">
-            <h3>研究問題</h3>
-            <p>「內在閱讀動機」和「閱讀表現」之間的關係如何？男生和女生有差異嗎？</p>
-            
-            <ul>
-                <li><strong>變項1</strong>：內在閱讀動機（有多喜歡閱讀）</li>
-                <li><strong>變項2</strong>：閱讀表現（閱讀測驗的分數）</li>
-                <li><strong>時間點</strong>：研究者在兩個不同的時間點收集數據</li>
-                <li><strong>研究對象</strong>：男生和女生</li>
-            </ul>
-            
-            <p>研究者想知道：</p>
-            <ol>
-                <li>是「喜歡閱讀」導致「閱讀成績好」？</li>
-                <li>還是「閱讀成績好」導致更「喜歡閱讀」？</li>
-                <li>男生和女生的模式是否不同？</li>
-            </ol>
+
+    <div class="card">
+      <h2>多群組CLPM分析</h2>
+      <p>當我們想要<span class="highlight">比較不同群體</span>（例如男生和女生）之間的關係模式時，會使用「多群組CLPM分析」。</p>
+      
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-content left">
+            <h3>步驟1：收集資料</h3>
+            <p>對同一群人在不同時間點（例如每年）收集相同的資料</p>
+          </div>
         </div>
-        
-        <p>研究者使用了「多群組 CLPM」，並確保模型在比較男生和女生時是公平的（「因素負荷量」在不同性別和時間點上保持相同）。</p>
+        <div class="timeline-item">
+          <div class="timeline-content right">
+            <h3>步驟2：建立模型</h3>
+            <p>使用特殊的統計軟體（如Mplus）建立CLPM模型</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content left">
+            <h3>步驟3：設定限制條件</h3>
+            <p>確保比較的公平性，例如讓某些測量在不同群組中保持相同</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content right">
+            <h3>步驟4：評估模型適配度</h3>
+            <p>檢查模型是否很好地描述了真實資料</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content left">
+            <h3>步驟5：分析結果</h3>
+            <p>比較不同群組（如男生和女生）之間的關係模式</p>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="section">
-        <h2>統計分析軟體：Mplus</h2>
-        <p>研究者使用了一種叫做 Mplus 的專業統計軟體來進行分析。這個軟體有一些特別的方法：</p>
-        
+
+    <div class="card">
+      <h2>模型適配度指標</h2>
+      <p>研究人員會使用一些<span class="highlight">數學指標</span>來判斷CLPM模型是否符合實際數據：</p>
+      
+      <div class="metric">
+        <div class="metric-icon">📊</div>
+        <div>
+          <h3>CFI (比較適配指數)</h3>
+          <p>測量模型與理想模型的接近程度</p>
+          <p>好的模型：<strong>CFI > 0.95</strong></p>
+          <p>可接受的模型：<strong>CFI > 0.90</strong></p>
+        </div>
+      </div>
+      
+      <div class="metric">
+        <div class="metric-icon">📉</div>
+        <div>
+          <h3>RMSEA (均方根近似誤差)</h3>
+          <p>測量模型的精確度</p>
+          <p>好的模型：<strong>RMSEA < 0.05</strong></p>
+          <p>可接受的模型：<strong>RMSEA < 0.08</strong></p>
+        </div>
+      </div>
+      
+      <div class="metric">
+        <div class="metric-icon">📏</div>
+        <div>
+          <h3>SRMR (標準化均方根殘差)</h3>
+          <p>測量模型與實際數據的差距</p>
+          <p>好的模型：<strong>SRMR < 0.05</strong></p>
+          <p>可接受的模型：<strong>SRMR < 0.08</strong></p>
+        </div>
+      </div>
+      
+      <div class="example">
+        <h3>簡單比喻</h3>
+        <p>你可以把這些指標想像成評分卡：</p>
         <ul>
-            <li><strong>MLR（最大似然估計與穩健標準誤）</strong>：一種可靠的估計方法，即使數據不是完全理想</li>
-            <li><strong>FIML（完整資訊最大似然法）</strong>：能處理缺失資料的方法，即使有些參與者沒有完成所有測量</li>
+          <li><strong>CFI</strong>：像是考試分數，越高越好（接近1分最好）</li>
+          <li><strong>RMSEA和SRMR</strong>：像是錯誤數，越低越好（接近0最好）</li>
         </ul>
-        
-        <div class="note">
-            <p>想像你和朋友玩「猜數字」遊戲。MLR 和 FIML 就像是特別聰明的猜測策略，即使有些線索缺失了，也能做出最合理的猜測！</p>
-        </div>
+      </div>
     </div>
-    
-    <div class="section">
-        <h2>總結：CLPM 的簡單五步驟</h2>
-        <ol>
-            <li><strong>收集資料</strong>：在不同時間點收集相同變項的資料</li>
-            <li><strong>建立模型</strong>：設計變項之間可能的關係模型</li>
-            <li><strong>使用軟體分析</strong>：用專業軟體（如 Mplus）進行分析</li>
-            <li><strong>檢查模型適配度</strong>：用 CFI、RMSEA、SRMR 等指標確認模型是否可靠</li>
-            <li><strong>解釋結果</strong>：根據分析結果，了解變項之間隨時間的關係</li>
-        </ol>
-        
-        <p>這就是研究者如何使用 CLPM 來探索變項之間隨時間變化的神奇關係！</p>
+
+    <div class="card">
+      <h2>CLPM的實際應用</h2>
+      <p>CLPM在許多領域都有應用：</p>
+      <ul>
+        <li><strong>教育研究</strong>：了解學習動機和學業成就之間的關係</li>
+        <li><strong>心理健康</strong>：分析壓力和焦慮之間的相互影響</li>
+        <li><strong>社會發展</strong>：研究友誼品質和社交技巧之間的關係</li>
+        <li><strong>家庭研究</strong>：探索親子關係和孩子行為之間的相互作用</li>
+      </ul>
+      
+      <div class="example">
+        <h3>為什麼這很重要？</h3>
+        <p>了解變數之間的<span class="highlight">因果關係</span>可以幫助我們：</p>
+        <ul>
+          <li>設計更有效的教育方法</li>
+          <li>開發更好的心理健康干預措施</li>
+          <li>提供更精準的家庭支持服務</li>
+        </ul>
+      </div>
     </div>
-    
-    <div class="section">
-        <h2>小測驗：你學會了嗎？</h2>
-        <div class="example">
-            <p><strong>情境：</strong>研究者想了解「每天玩遊戲的時間」和「數學成績」之間的關係。</p>
-            <p><strong>問題：</strong>如果使用 CLPM，研究者能探索什麼問題？</p>
-            <ol>
-                <li>是玩遊戲時間多導致數學成績下降，還是數學成績不好的學生更喜歡玩遊戲？</li>
-                <li>男生和女生玩遊戲的時間和數學成績之間的關係是否不同？</li>
-                <li>這些關係是否隨著時間改變？</li>
-            </ol>
-            <p>答案：以上全都可以！CLPM 就是這麼強大！</p>
-        </div>
-    </div>
-    
+
     <footer>
-        <p>© 2025 跨時關係探索王國 | 為國中生設計的統計學習資源</p>
-        <p>本網站內容經過簡化，僅供教育目的使用。若需進一步了解 CLPM，請諮詢相關專業人士。</p>
+      <p>本網站旨在簡化複雜的統計概念，讓國中生也能理解。</p>
+      <p>© 2025 統計學習資源網</p>
     </footer>
+  </div>
 </body>
 </html>
