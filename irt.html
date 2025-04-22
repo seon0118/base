@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>項目反應理論(IRT)簡介 - 讓考試更公平</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #4a89dc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .example-box {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: #4a89dc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .button:hover {
+            background-color: #3b7dd8;
+        }
+        .slider-container {
+            margin: 15px 0;
+        }
+        .slider {
+            width: 80%;
+        }
+        canvas {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            background: #fff;
+            border: 1px solid #ddd;
+            margin: 10px auto;
+            display: block;
+        }
+        .author {
+            text-align: right;
+            font-style: italic;
+            margin-top: 30px;
+        }
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+        .flex-item {
+            flex: 1;
+            min-width: 250px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #e8eaf6;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>項目反應理論 (IRT)</h1>
+        <p>讓考試更公平、更精確的神奇理論</p>
+    </header>
+
+    <section>
+        <h2>什麼是項目反應理論？</h2>
+        <p>想像一下，如果我們能夠設計一種考試，可以準確測量每個人的真實能力，不會因為考題太難或太簡單而影響結果，那會有多棒！這就是<strong>項目反應理論</strong>（Item Response Theory，簡稱IRT）想要達成的目標。</p>
+
+        <div class="info-box">
+            <p>項目反應理論是一種幫助我們<strong>設計、分析和改進測驗</strong>的方法。它可以幫助我們了解：</p>
+            <ul>
+                <li>每道題目的難度</li>
+                <li>每道題目能夠區分不同能力的學生的程度</li>
+                <li>猜測對答案的可能性</li>
+            </ul>
+        </div>
+
+        <div class="example-box">
+            <h3>生活中的例子</h3>
+            <p>你可能參加過的考試，如國中教育會考、國際學生能力評量計畫(PISA)、多益英語測驗(TOEIC)等，都應用了項目反應理論來設計和評分。</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>為什麼需要項目反應理論？</h2>
+        
+        <div class="flex-container">
+            <div class="flex-item">
+                <h3>傳統考試的問題</h3>
+                <ul>
+                    <li>得分只看對了幾題，不考慮題目難度</li>
+                    <li>不同考卷難度不同，分數無法直接比較</li>
+                    <li>無法準確測量特別優秀或特別弱的學生</li>
+                </ul>
+            </div>
+            <div class="flex-item">
+                <h3>項目反應理論的優點</h3>
+                <ul>
+                    <li>考慮每題的難度和鑑別度</li>
+                    <li>即使考不同的試卷，也能公平比較</li>
+                    <li>能更準確地測量各種能力水平的學生</li>
+                    <li>可以建立電腦適性測驗，針對個人能力出題</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="example-box">
+            <h3>舉個例子</h3>
+            <p>小明和小華參加了數學測驗，小明答對了8題，小華答對了9題。但如果小明答對的題目都是難題，而小華答對的都是簡單題，誰的數學能力更強？項目反應理論可以幫我們解決這個問題！</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>項目反應理論的基本概念</h2>
+
+        <h3>能力值(θ)</h3>
+        <p>在項目反應理論中，我們用希臘字母<strong>θ (theta)</strong>來表示學生的能力值。能力值通常分布在-3到+3之間，0代表平均水平。</p>
+        <ul>
+            <li>θ = -2：能力明顯低於平均</li>
+            <li>θ = 0：平均能力</li>
+            <li>θ = +2：能力明顯高於平均</li>
+        </ul>
+
+        <h3>題目參數</h3>
+        <p>每道題目有幾個重要參數：</p>
+
+        <div class="info-box">
+            <ul>
+                <li><strong>難度參數(b)</strong>：代表題目的難度。b越大，題目越難。</li>
+                <li><strong>鑑別度參數(a)</strong>：表示題目區分不同能力學生的能力。a越大，題目越能區分高低能力者。</li>
+                <li><strong>猜測參數(c)</strong>：表示完全不會的學生猜對答案的機率。在選擇題中很重要。</li>
+            </ul>
+        </div>
+
+        <div class="example-box">
+            <h3>想像一下...</h3>
+            <p>如果一題的難度(b)是1.5，意味著能力值(θ)為1.5的學生有50%的機率答對這題。如果你的能力值高於1.5，答對的機率就會更高；如果低於1.5，答對的機率就會更低。</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>互動示範：理解項目特徵曲線</h2>
+        <p>項目特徵曲線(ICC)是一條S形曲線，顯示不同能力值的學生答對題目的機率。試著調整下面的參數，看看曲線如何變化：</p>
+
+        <div class="slider-container">
+            <label for="difficultySlider">難度 (b): <span id="difficultyValue">0</span></label><br>
+            <input type="range" id="difficultySlider" class="slider" min="-3" max="3" step="0.1" value="0">
+        </div>
+
+        <div class="slider-container">
+            <label for="discriminationSlider">鑑別度 (a): <span id="discriminationValue">1</span></label><br>
+            <input type="range" id="discriminationSlider" class="slider" min="0.5" max="2" step="0.1" value="1">
+        </div>
+
+        <div class="slider-container">
+            <label for="guessingSlider">猜測參數 (c): <span id="guessingValue">0.2</span></label><br>
+            <input type="range" id="guessingSlider" class="slider" min="0" max="0.5" step="0.05" value="0.2">
+        </div>
+
+        <button id="updateButton" class="button">更新曲線</button>
+
+        <canvas id="iccCanvas"></canvas>
+
+        <div class="info-box">
+            <p><strong>如何解讀曲線：</strong></p>
+            <ul>
+                <li>橫軸是能力值(θ)，從低能力(-3)到高能力(+3)</li>
+                <li>縱軸是答對題目的機率，從0到1</li>
+                <li>曲線中間陡峭的部分表示題目最能區分的能力範圍</li>
+                <li>曲線左右兩端的平坦部分表示能力特別低或特別高的學生表現較為穩定</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>項目反應理論的實際應用</h2>
+
+        <h3>電腦適性測驗</h3>
+        <p>電腦適性測驗(CAT)是項目反應理論最重要的應用之一。與傳統測驗不同，CAT會根據你之前的答題狀況，即時調整後續題目的難度。</p>
+
+        <div class="example-box">
+            <h3>電腦適性測驗是如何運作的？</h3>
+            <ol>
+                <li>測驗開始時，系統會出一道中等難度的題目</li>
+                <li>如果你答對了，下一題會稍微難一點</li>
+                <li>如果你答錯了，下一題會簡單一點</li>
+                <li>系統不斷調整，直到準確估計出你的能力值</li>
+            </ol>
+            <p>這種方式可以用更少的題目，更準確地測量你的能力，也不會讓你因為太多太難或太簡單的題目而感到挫折。</p>
+        </div>
+
+        <h3>其他應用</h3>
+        <ul>
+            <li><strong>題庫建立：</strong>建立大型題庫，確保每題都有精確的參數</li>
+            <li><strong>試卷等化：</strong>使不同難度的試卷能公平比較</li>
+            <li><strong>題目分析：</strong>找出設計不佳的題目並改進</li>
+            <li><strong>診斷評量：</strong>精確找出學生的強項和弱項</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>簡單測驗：了解你的能力值</h2>
+        <p>下面是一個由簡到難的10道數學題。回答後，我們會估計你的大致能力值！</p>
+        <div id="quizContainer">
+            <div id="quizQuestion" class="example-box">
+                <h3>題目 1：</h3>
+                <p>25 + 48 = ?</p>
+                <button class="button" onclick="checkAnswer(0, 73)">73</button>
+                <button class="button" onclick="checkAnswer(0, 63)">63</button>
+                <button class="button" onclick="checkAnswer(0, 83)">83</button>
+                <button class="button" onclick="checkAnswer(0, 72)">72</button>
+            </div>
+            <div id="quizResult" style="display: none;" class="info-box">
+                <h3>測驗結果</h3>
+                <p id="resultText"></p>
+                <button class="button" onclick="restartQuiz()">重新測驗</button>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>項目反應理論小結</h2>
+        <div class="flex-container">
+            <div class="flex-item">
+                <h3>主要特點</h3>
+                <ul>
+                    <li>考慮題目難度、鑑別度和猜測因素</li>
+                    <li>能精確測量學生真實能力</li>
+                    <li>不同測驗的分數可以比較</li>
+                    <li>可以設計適合個人能力的題目</li>
+                </ul>
+            </div>
+            <div class="flex-item">
+                <h3>對學習的幫助</h3>
+                <ul>
+                    <li>更公平、更準確的評量</li>
+                    <li>了解自己的真實能力水平</li>
+                    <li>針對自己的能力進行學習</li>
+                    <li>減少因考試設計不良造成的挫折</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="example-box">
+            <h3>為什麼這對你很重要？</h3>
+            <p>了解項目反應理論可以幫助你：</p>
+            <ul>
+                <li>理解現代測驗如何評分</li>
+                <li>知道如何解讀自己的考試成績</li>
+                <li>對自己的能力有更客觀的認識</li>
+                <li>為未來的標準化測驗做好準備</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <p>本網頁旨在以簡單易懂的方式介紹項目反應理論，幫助國中生理解現代測驗的原理。</p>
+        <p>© 2025 項目反應理論入門</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        // ICC 圖表
+        let iccChart;
+        let difficulty = 0;
+        let discrimination = 1;
+        let guessing = 0.2;
+        
+        // 更新滑桿顯示值
+        document.getElementById('difficultySlider').addEventListener('input', function() {
+            difficulty = parseFloat(this.value);
+            document.getElementById('difficultyValue').textContent = difficulty.toFixed(1);
+        });
+        
+        document.getElementById('discriminationSlider').addEventListener('input', function() {
+            discrimination = parseFloat(this.value);
+            document.getElementById('discriminationValue').textContent = discrimination.toFixed(1);
+        });
+        
+        document.getElementById('guessingSlider').addEventListener('input', function() {
+            guessing = parseFloat(this.value);
+            document.getElementById('guessingValue').textContent = guessing.toFixed(1);
+        });
+        
+        // 項目特徵曲線函數
+        function calculateICC(theta, a, b, c) {
+            return c + (1 - c) / (1 + Math.exp(-a * (theta - b)));
+        }
+        
+        // 初始化圖表
+        function initChart() {
+            const thetas = Array.from({length: 61}, (_, i) => -3 + i * 0.1);
+            const iccCtx = document.getElementById('iccCanvas').getContext('2d');
+            
+            iccChart = new Chart(iccCtx, {
+                type: 'line',
+                data: {
+                    labels: thetas,
+                    datasets: [{
+                        label: '答對機率',
+                        data: thetas.map(theta => calculateICC(theta, discrimination, difficulty, guessing)),
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '能力值 (θ)'
+                            }
+                        },
+                        y: {
+                            min: 0,
+                            max: 1,
+                            title: {
+                                display: true,
+                                text: '答對機率'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '項目特徵曲線 (ICC)',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 更新圖表
+        function updateChart() {
+            const thetas = Array.from({length: 61}, (_, i) => -3 + i * 0.1);
+            iccChart.data.datasets[0].data = thetas.map(theta => 
+                calculateICC(theta, discrimination, difficulty, guessing)
+            );
+            iccChart.update();
+        }
+        
+        // 更新按鈕事件
+        document.getElementById('updateButton').addEventListener('click', updateChart);
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initChart();
+        });
+        
+        // 簡單測驗功能
+        const questions = [
+            {
+                text: "25 + 48 = ?",
+                options: ["73", "63", "83", "72"],
+                answer: 73,
+                difficulty: -2.0
+            },
+            {
+                text: "7 × 8 = ?",
+                options: ["56", "54", "58", "64"],
+                answer: 56,
+                difficulty: -1.5
+            },
+            {
+                text: "12 × 12 = ?",
+                options: ["144", "124", "142", "122"],
+                answer: 144,
+                difficulty: -1.0
+            },
+            {
+                text: "72 ÷ 9 = ?",
+                options: ["8", "9", "7", "6"],
+                answer: 8,
+                difficulty: -0.5
+            },
+            {
+                text: "找出下列數字中的質數：15, 21, 29, 33",
+                options: ["15", "21", "29", "33"],
+                answer: 29,
+                difficulty: 0.0
+            },
+            {
+                text: "解方程式：3x + 7 = 22",
+                options: ["x = 5", "x = 6", "x = 4", "x = 7"],
+                answer: "x = 5",
+                difficulty: 0.5
+            },
+            {
+                text: "一個數的25%是15，這個數是多少？",
+                options: ["45", "60", "75", "30"],
+                answer: 60,
+                difficulty: 1.0
+            },
+            {
+                text: "三角形的三個內角和為多少度？",
+                options: ["90度", "180度", "270度", "360度"],
+                answer: "180度",
+                difficulty: 1.5
+            },
+            {
+                text: "9² - 5² = ?",
+                options: ["56", "81", "52", "4"],
+                answer: 56,
+                difficulty: 2.0
+            },
+            {
+                text: "如果一個正方形的面積是81平方公分，它的周長是多少公分？",
+                options: ["36", "32", "40", "24"],
+                answer: 36,
+                difficulty: 2.5
+            }
+        ];
+        
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let questionContainer = document.getElementById('quizQuestion');
+        let resultContainer = document.getElementById('quizResult');
+        
+        function checkAnswer(questionIndex, selectedAnswer) {
+            if (selectedAnswer === questions[currentQuestionIndex].answer) {
+                correctAnswers++;
+            }
+            
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion(currentQuestionIndex);
+            } else {
+                showResult();
+            }
+        }
+        
+        function showQuestion(index) {
+            const question = questions[index];
+            let html = `<h3>題目 ${index + 1}：</h3>
+                        <p>${question.text}</p>`;
+            
+            question.options.forEach(option => {
+                html += `<button class="button" onclick="checkAnswer(${index}, '${option}')">${option}</button> `;
+            });
+            
+            questionContainer.innerHTML = html;
+        }
+        
+        function showResult() {
+            questionContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            let resultText = document.getElementById('resultText');
+            let estimatedAbility = -3 + correctAnswers * 0.6; // 簡單估計
+            
+            let abilityDescription;
+            if (estimatedAbility < -2) {
+                abilityDescription = "基礎程度，需要多加練習";
+            } else if (estimatedAbility < -1) {
+                abilityDescription = "初學程度，基礎尚可";
+            } else if (estimatedAbility < 0) {
+                abilityDescription = "中下程度，仍有進步空間";
+            } else if (estimatedAbility < 1) {
+                abilityDescription = "中等程度，表現不錯";
+            } else if (estimatedAbility < 2) {
+                abilityDescription = "中上程度，掌握得相當好";
+            } else {
+                abilityDescription = "優秀程度，表現出色";
+            }
+            
+            resultText.innerHTML = `你答對了${correctAnswers}題，根據項目反應理論估計，你的能力值約為 <strong>${estimatedAbility.toFixed(1)}</strong>。<br><br>
+                                    <strong>能力描述：</strong> ${abilityDescription}<br><br>
+                                    <strong>注意：</strong> 這只是一個簡單示範，真實的項目反應理論評估會更精確！`;
+        }
+        
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            questionContainer.style.display = 'block';
+            resultContainer.style.display = 'none';
+            showQuestion(0);
+        }
+    </script>
+</body>
+</html>
