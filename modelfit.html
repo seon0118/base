@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>認識模型適配度 - 統計學小教室</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23f9f9f9" fill-opacity="1"></path></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0;
+        }
+        h2 {
+            font-size: 1.8rem;
+            color: #4CAF50;
+            margin-top: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        .intro {
+            font-size: 1.2rem;
+            background-color: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+        .example-box {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .concept {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .concept-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .concept-card h3 {
+            color: #4CAF50;
+            margin-top: 0;
+        }
+        .analogy {
+            background-color: #fff8e1;
+            padding: 1rem;
+            border-left: 4px solid #ffc107;
+            margin: 1.5rem 0;
+        }
+        .conclusion {
+            background-color: #e0f2f1;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        .slider-container {
+            margin: 2rem 0;
+        }
+        .slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+        .fit-example {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .fit-item {
+            text-align: center;
+            margin: 1rem;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 200px;
+        }
+        .fit-item img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+        .interactive-demo {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+        .model-fit-values {
+            background-color: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        .model-fit-values p {
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+        .highlight {
+            background-color: #ffeb3b;
+            padding: 0 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>認識模型適配度</h1>
+        <p>統計學小教室 - 給國中生的友善解說</p>
+        <div class="wave"></div>
+    </header>
+    
+    <div class="container">
+        <div class="intro">
+            <h2>什麼是模型適配度？</h2>
+            <p>想像一下，你正在嘗試用拼圖片拼出一幅完整的畫面。<strong>模型適配度</strong>就好比是評估這些拼圖片拼在一起有多完美！在統計學中，研究人員建立各種模型來解釋世界，而適配度就是用來衡量這些模型有多貼近真實情況。</p>
+        </div>
+
+        <div class="example-box">
+            <h2>一個真實的例子</h2>
+            <p>以下是研究人員在報告中提到的模型適配度數據：</p>
+            <div class="model-fit-values">
+                <p>估計的模型顯示良好的適配度 (χ<sup>2</sup> = 2107.04, df = 169, p < .001, CFI = 0.96, RMSEA = 0.05, SRMR = 0.05)</p>
+            </div>
+            <p>這看起來很複雜，對吧？別擔心！讓我們一步步拆解這些數字，了解它們的意義。</p>
+        </div>
+
+        <div class="analogy">
+            <h3>生活中的比喻</h3>
+            <p>想像你正在試穿衣服：</p>
+            <ul>
+                <li><strong>完美合身</strong>的衣服就像適配度良好的模型</li>
+                <li><strong>太鬆垮</strong>的衣服就像適配度不佳的模型</li>
+                <li><strong>太緊繃</strong>的衣服也不理想，就像過度適配的模型</li>
+            </ul>
+            <p>研究人員需要找到「剛剛好」的模型，就像你需要找到剛好合身的衣服一樣！</p>
+        </div>
+
+        <h2>模型適配度指標大解密</h2>
+        
+        <div class="concept">
+            <div class="concept-card">
+                <h3>χ<sup>2</sup> 值 (卡方值)</h3>
+                <p>這是一個測量模型與實際數據差異的指標。</p>
+                <p><strong>比喻：</strong>就像測量你的腰圍與褲子尺寸的差距。</p>
+                <p>我們的例子中：χ<sup>2</sup> = 2107.04，這個數字本身很難解讀，需要配合其他指標一起看。</p>
+            </div>
+            
+            <div class="concept-card">
+                <h3>df (自由度)</h3>
+                <p>這代表模型中可以自由變動的數值數量。</p>
+                <p><strong>比喻：</strong>就像調整衣服的方式數量，越多調整方式，模型越複雜。</p>
+                <p>我們的例子中：df = 169</p>
+            </div>
+            
+            <div class="concept-card">
+                <h3>p 值</h3>
+                <p>這告訴我們結果是否有統計意義。</p>
+                <p><strong>比喻：</strong>就像裁判做出的決定 — 是否判定結果有效。</p>
+                <p>我們的例子中：p < .001 (非常有統計意義)</p>
+            </div>
+        </div>
+        
+        <div class="concept">
+            <div class="concept-card">
+                <h3>CFI (比較適配指數)</h3>
+                <p>測量我們的模型比起基本模型好多少。</p>
+                <p><strong>比喻：</strong>就像比較你做的蛋糕與市售蛋糕的差別。</p>
+                <p>數值範圍：0 到 1，越接近 1 越好</p>
+                <p>我們的例子中：CFI = 0.96 (<span class="highlight">非常好！</span>)</p>
+            </div>
+            
+            <div class="concept-card">
+                <h3>RMSEA (均方根誤差近似值)</h3>
+                <p>測量模型的整體誤差有多大。</p>
+                <p><strong>比喻：</strong>就像測量你射箭時離靶心的平均距離。</p>
+                <p>數值越小越好，通常 < 0.08 就不錯</p>
+                <p>我們的例子中：RMSEA = 0.05 (<span class="highlight">很好！</span>)</p>
+            </div>
+            
+            <div class="concept-card">
+                <h3>SRMR (標準化均方根殘差)</h3>
+                <p>測量模型預測值與實際數據的平均差異。</p>
+                <p><strong>比喻：</strong>好比測量你對朋友生日猜測的平均誤差。</p>
+                <p>數值越小越好，通常 < 0.08 就不錯</p>
+                <p>我們的例子中：SRMR = 0.05 (<span class="highlight">很好！</span>)</p>
+            </div>
+        </div>
+
+        <div class="interactive-demo">
+            <h2>互動體驗：模型適配度</h2>
+            <p>移動下面的滑桿，感受不同適配度指標的變化：</p>
+            
+            <div class="slider-container">
+                <label for="cfi-slider">CFI 值 (目前: 0.96):</label>
+                <input type="range" id="cfi-slider" class="slider" min="0" max="1" step="0.01" value="0.96">
+                <p id="cfi-feedback">0.96 - 非常好的適配度！</p>
+            </div>
+            
+            <div class="slider-container">
+                <label for="rmsea-slider">RMSEA 值 (目前: 0.05):</label>
+                <input type="range" id="rmsea-slider" class="slider" min="0" max="0.2" step="0.01" value="0.05">
+                <p id="rmsea-feedback">0.05 - 很好的適配度！</p>
+            </div>
+            
+            <div class="slider-container">
+                <label for="srmr-slider">SRMR 值 (目前: 0.05):</label>
+                <input type="range" id="srmr-slider" class="slider" min="0" max="0.2" step="0.01" value="0.05">
+                <p id="srmr-feedback">0.05 - 很好的適配度！</p>
+            </div>
+        </div>
+
+        <h2>不同適配度的視覺例子</h2>
+        <div class="fit-example">
+            <div class="fit-item">
+                <img src="/api/placeholder/150/150" alt="良好適配度示例">
+                <h3>良好適配度</h3>
+                <p>模型預測值與實際數據非常接近</p>
+            </div>
+            <div class="fit-item">
+                <img src="/api/placeholder/150/150" alt="一般適配度示例">
+                <h3>一般適配度</h3>
+                <p>模型預測值與實際數據有一些差異</p>
+            </div>
+            <div class="fit-item">
+                <img src="/api/placeholder/150/150" alt="差適配度示例">
+                <h3>差適配度</h3>
+                <p>模型預測值與實際數據相差很大</p>
+            </div>
+        </div>
+
+        <div class="conclusion">
+            <h2>總結：我們學到了什麼？</h2>
+            <p>從研究報告中的模型適配度數據(χ<sup>2</sup> = 2107.04, df = 169, p < .001, CFI = 0.96, RMSEA = 0.05, SRMR = 0.05)，我們可以判斷這個模型的適配度<strong>非常好</strong>！</p>
+            <p>這些數字告訴我們：</p>
+            <ul>
+                <li>CFI = 0.96：接近完美的1.0，表示模型比基本模型好很多</li>
+                <li>RMSEA = 0.05：誤差很小，低於0.08的好標準</li>
+                <li>SRMR = 0.05：實際數據與模型預測值的差異很小</li>
+            </ul>
+            <p>所以，這個模型就像一件非常合身的衣服，能很好地解釋研究中的實際數據！</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>統計學小教室 © 2025 - 讓統計變得有趣又容易！</p>
+    </footer>
+
+    <script>
+        // 滑桿互動功能
+        const cfiSlider = document.getElementById('cfi-slider');
+        const rmseaSlider = document.getElementById('rmsea-slider');
+        const srmrSlider = document.getElementById('srmr-slider');
+        const cfiFeedback = document.getElementById('cfi-feedback');
+        const rmseaFeedback = document.getElementById('rmsea-feedback');
+        const srmrFeedback = document.getElementById('srmr-feedback');
+        
+        cfiSlider.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            cfiFeedback.textContent = value.toFixed(2) + " - " + getCFIFeedback(value);
+        });
+        
+        rmseaSlider.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            rmseaFeedback.textContent = value.toFixed(2) + " - " + getRMSEAFeedback(value);
+        });
+        
+        srmrSlider.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            srmrFeedback.textContent = value.toFixed(2) + " - " + getSRMRFeedback(value);
+        });
+        
+        function getCFIFeedback(value) {
+            if (value >= 0.95) return "非常好的適配度！";
+            if (value >= 0.90) return "良好的適配度";
+            if (value >= 0.80) return "可接受的適配度";
+            return "適配度不佳";
+        }
+        
+        function getRMSEAFeedback(value) {
+            if (value <= 0.05) return "很好的適配度！";
+            if (value <= 0.08) return "良好的適配度";
+            if (value <= 0.10) return "勉強可接受的適配度";
+            return "適配度不佳";
+        }
+        
+        function getSRMRFeedback(value) {
+            if (value <= 0.05) return "很好的適配度！";
+            if (value <= 0.08) return "良好的適配度";
+            if (value <= 0.10) return "可接受的適配度";
+            return "適配度不佳";
+        }
+    </script>
+</body>
+</html>
